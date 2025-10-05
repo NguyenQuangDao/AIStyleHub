@@ -22,7 +22,7 @@ const CACHE_TTL = 10 * 60 * 1000; // 10 minutes
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "GET") {
     res.setHeader("Allow", ["GET"]);
-    return res.status(405).json({ error: "Method Not Allowed" });
+    return res.status(405).json({ error: "Phương Thức Không Được Phép" });
   }
 
   try {
@@ -61,11 +61,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     if (error instanceof Error && error.name === "PrismaClientInitializationError") {
       return res.status(503).json({
-        error: "Database unavailable",
-        hint: "Ensure the database is properly configured and running.",
+        error: "Cơ sở dữ liệu không khả dụng",
+        hint: "Đảm bảo cơ sở dữ liệu được cấu hình và chạy đúng cách.",
       });
     }
 
-    return res.status(500).json({ error: "Failed to load products" });
+    return res.status(500).json({ error: "Không thể tải sản phẩm" });
   }
 }

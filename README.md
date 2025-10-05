@@ -1,36 +1,151 @@
-# AIStyleHub
+# AIStyleHub - Modern Fashion Platform
 
-AIStyleHub is an AI-driven fashion experience built with Next.js. Shoppers can generate virtual try-ons powered by Stable Diffusion, receive GPT-4o curated outfits, and jump directly to partner stores through smart shopping links. The project is optimized for Vercel hosting with a Postgres database managed via Prisma.
+A beautiful, modern Next.js application with smooth animations, excellent UX, and AI-powered fashion features. Built with TypeScript, Tailwind CSS, and Framer Motion.
 
-## 🚀 Features
+## ✨ Features
 
-- **Virtual Try-On (VTO):** Upload a portrait, select any catalog product, and Stable Diffusion (Hugging Face Inference) renders a realistic overlay. Results are cached and persisted for quick comparisons.
-- **AI Outfit Recommendations:** Submit a style prompt—GPT-4o suggests cohesive outfits mapped to live catalog products and shops.
-- **Smart Shopping Links:** Each recommended product includes purchase-ready links to retailers such as Zara, H&M, Shopee, and more.
-- **Rich Catalog Management:** Prisma-backed Postgres schema with seeded data covering 10 shops and 50 products tagged by style.
-- **Performance & Resilience:** Response caching, file-size validation, and environment-isolated API keys keep the UX responsive and secure.
+### 🎨 Modern Design System
+- **Light/Dark Theme**: Automatic theme detection with manual toggle
+- **Design Tokens**: Consistent spacing, colors, and typography
+- **Responsive Design**: Mobile-first approach with adaptive breakpoints
+- **Glassmorphism**: Subtle glass effects and modern aesthetics
+
+### 🎭 Smooth Animations
+- **Page Transitions**: Seamless navigation with Framer Motion
+- **Micro-interactions**: Hover effects, button animations, and loading states
+- **Staggered Animations**: Beautiful entrance animations for lists and grids
+- **Reduced Motion**: Respects user's motion preferences
+
+### 🧩 Reusable Components
+- **Button Variants**: Multiple styles with loading states and animations
+- **Card Components**: Hover effects and consistent styling
+- **Modal System**: Accessible modals with focus management
+- **Toast Notifications**: Stacked notifications with animations
+- **Skeleton Loaders**: Beautiful loading states
+
+### 📱 Pages & Features
+- **Landing Page**: Hero section, feature cards, testimonials
+- **Dashboard**: Collapsible sidebar, stat cards, data tables
+- **Product Listing**: Grid view, filters, quick-view modal
+- **Profile/Settings**: Multi-step forms with validation
+- **Virtual Try-On**: AI-powered outfit visualization
+- **Recommendations**: GPT-4o powered style suggestions
+
+### ♿ Accessibility
+- **Keyboard Navigation**: Full keyboard support
+- **ARIA Labels**: Proper semantic markup
+- **Screen Reader**: Optimized for assistive technologies
+- **Color Contrast**: WCAG AA compliant
+- **Focus Management**: Proper focus trapping and indicators
+
+### 🤖 AI Features
+- **Virtual Try-On (VTO):** Upload a portrait, select any catalog product, and Stable Diffusion renders a realistic overlay
+- **AI Outfit Recommendations:** Submit a style prompt—GPT-4o suggests cohesive outfits mapped to live catalog products
+- **Smart Shopping Links:** Each recommended product includes purchase-ready links to retailers
+- **Rich Catalog Management:** Prisma-backed Postgres schema with seeded data
+- **Performance & Resilience:** Response caching, file-size validation, and environment-isolated API keys
 
 ## 🧱 Tech Stack
 
-- **Frontend:** Next.js 15 (Pages Router), React 19, TypeScript, Tailwind CSS 4
-- **Backend:** Next.js API routes, Prisma ORM
-- **Database:** PostgreSQL (local, Neon, or Render)
-- **AI Providers:** Hugging Face (`stabilityai/stable-diffusion-2`), OpenAI GPT-4o
-- **Deployment Targets:** Vercel (web + serverless APIs) and Neon/Render for managed Postgres
+### Core Framework
+- **Next.js 15**: React framework with Pages Router
+- **TypeScript**: Type-safe development
+- **React 19**: Latest React features
 
-## 📁 Key Structure
+### Styling & Design
+- **Tailwind CSS v4**: Utility-first CSS framework
+- **Design Tokens**: Consistent design system
+- **CSS Variables**: Dynamic theming support
+
+### Animations & Interactions
+- **Framer Motion**: Smooth animations and transitions
+- **Lottie**: Vector animations (optional)
+- **CSS Transforms**: Hardware-accelerated animations
+
+### UI Components
+- **Radix UI**: Accessible component primitives
+- **Headless UI**: Unstyled, accessible components
+- **Lucide React**: Beautiful icons
+- **Class Variance Authority**: Component variants
+
+### Backend & Database
+- **Next.js API routes**: Serverless functions
+- **Prisma ORM**: Database management
+- **PostgreSQL**: Database (local, Neon, or Render)
+
+### AI Providers
+- **Hugging Face**: Stable Diffusion for virtual try-on
+- **OpenAI GPT-4o**: Outfit recommendations
+
+### Development Tools
+- **ESLint**: Code linting
+- **Prettier**: Code formatting
+- **TypeScript**: Static type checking
+
+## 📁 Project Structure
 
 ```
 aistylehub/
-├── components/        # Reusable UI (layout, try-on, recommendation, product cards)
-├── pages/             # Pages Router views and API routes
-├── prisma/            # Schema & seeding scripts
-├── public/uploads/    # Generated try-on assets (runtime)
-├── lib/               # Prisma client, caching, AI helpers
-├── styles/            # Global Tailwind styles
-├── types/             # Shared TypeScript types
-└── .env.example       # Environment variable template
+├── components/
+│   ├── ui/                 # Reusable UI components
+│   │   ├── Button.tsx      # Animated button variants
+│   │   ├── Card.tsx        # Card components with hover effects
+│   │   ├── Modal.tsx       # Accessible modal system
+│   │   ├── Toast.tsx       # Toast notifications
+│   │   ├── Skeleton.tsx    # Loading skeletons
+│   │   └── ThemeToggle.tsx # Theme switcher
+│   ├── Layout.tsx          # Main layout with navigation
+│   └── PageTransition.tsx  # Page transition wrapper
+├── lib/
+│   ├── utils.ts           # Utility functions & animation constants
+│   ├── theme.tsx          # Theme provider & context
+│   ├── accessibility.ts   # Accessibility utilities
+│   ├── prisma.ts          # Database client
+│   ├── cache.ts           # Response caching
+│   ├── openai.ts          # OpenAI integration
+│   └── huggingface.ts     # Hugging Face integration
+├── pages/
+│   ├── index.tsx          # Animated landing page
+│   ├── dashboard.tsx      # Dashboard with sidebar
+│   ├── products.tsx       # Product listing with filters
+│   ├── profile.tsx        # Profile & settings
+│   ├── try-on.tsx         # Virtual try-on page
+│   ├── recommend.tsx      # AI recommendations
+│   └── api/               # API routes
+├── prisma/
+│   ├── schema.prisma      # Database schema
+│   └── seed.ts            # Seeding scripts
+├── styles/
+│   └── globals.css        # Global styles & design tokens
+├── types/
+│   └── index.ts           # TypeScript definitions
+└── public/
+    └── uploads/           # Generated try-on assets
 ```
+
+## 🎨 Design System
+
+### Color Palette
+- **Primary**: Blue (#3b82f6)
+- **Secondary**: Purple (#8b5cf6)
+- **Accent**: Pink (#ec4899)
+- **Neutral**: Slate scale
+- **Semantic**: Success, Warning, Error colors
+
+### Typography
+- **Font Family**: Geist Sans (system fallback)
+- **Scale**: Consistent size progression
+- **Weights**: 400, 500, 600, 700
+
+### Spacing
+- **Base Unit**: 0.25rem (4px)
+- **Scale**: xs, sm, md, lg, xl, 2xl, 3xl
+- **Container**: Max-width with responsive padding
+
+### Animations
+- **Duration**: 150ms (fast), 300ms (normal), 500ms (slow)
+- **Easing**: Custom cubic-bezier curves
+- **Reduced Motion**: Respects user preferences
 
 ## ⚙️ Prerequisites
 

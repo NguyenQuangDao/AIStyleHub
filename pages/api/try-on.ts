@@ -13,8 +13,8 @@ const MAX_IMAGE_BYTES = 5 * 1024 * 1024;
 
 const tryOnSchema = z.object({
   userImage: z
-    .string({ required_error: "userImage is required" })
-    .min(100, "userImage must be a base64 string"),
+    .string({ required_error: "Ảnh người dùng là bắt buộc" })
+    .min(100, "Ảnh người dùng phải là chuỗi base64"),
   productId: z.coerce.number().int().positive(),
 });
 
@@ -61,10 +61,10 @@ function extractBase64(input: string) {
 function ensureSizeLimit(base64: string) {
   const buffer = Buffer.from(base64, "base64");
   if (!buffer.length) {
-    throw new Error("Provided image is empty or invalid");
+    throw new Error("Ảnh được cung cấp trống hoặc không hợp lệ");
   }
   if (buffer.length > MAX_IMAGE_BYTES) {
-    throw new Error("Image exceeds the 5MB upload limit");
+    throw new Error("Ảnh vượt quá giới hạn tải lên 5MB");
   }
   return buffer;
 }
@@ -82,7 +82,7 @@ async function persistImage(buffer: Buffer, mimeType: string) {
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "POST") {
     res.setHeader("Allow", ["POST"]);
-    return res.status(405).json({ error: "Method Not Allowed" });
+    return res.status(405).json({ error: "Phương Thức Không Được Phép" });
   }
 
   try {
@@ -99,7 +99,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     });
 
     if (!product) {
-      return res.status(404).json({ error: "Product not found" });
+      return res.status(404).json({ error: "Không tìm thấy sản phẩm" });
     }
 
     const { base64: base64Payload } = extractBase64(userImage);
@@ -120,7 +120,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     const outfit = await prisma.outfit.create({
       data: {
-        style: `Virtual try-on for ${product.name}`,
+        style: `Thử đồ ảo cho ${product.name}`,
         imageUrl: savedImageUrl,
         products: {
           connect: { id: product.id },
@@ -170,12 +170,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     if (isPrismaInitializationError(error)) {
       return res.status(503).json({
-        error: "Database unavailable",
-        hint: "Start the database referenced in DATABASE_URL before generating try-ons.",
+        error: "Cơ sở dữ liệu không khả dụng",
+        hint: "Khởi động cơ sở dữ liệu được tham chiếu trong DATABASE_URL trước khi tạo thử đồ.",
       });
     }
 
-    const message = error instanceof Error ? error.message : "Unexpected error";
+    const message = error instanceof Error ? error.message : "Lỗi không mong muốn";
     return res.status(500).json({ error: message });
   }
 }

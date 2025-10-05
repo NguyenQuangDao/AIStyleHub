@@ -28,7 +28,7 @@ type RecommendationPayload = {
 };
 
 const recommendSchema = z.object({
-  style: z.string().min(3, "style description is required"),
+  style: z.string().min(3, "Mô tả phong cách là bắt buộc"),
 });
 
 const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
@@ -36,7 +36,7 @@ const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "POST") {
     res.setHeader("Allow", ["POST"]);
-    return res.status(405).json({ error: "Method Not Allowed" });
+    return res.status(405).json({ error: "Phương Thức Không Được Phép" });
   }
 
   const parseResult = recommendSchema.safeParse(req.body);
@@ -61,10 +61,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     type ProductWithShop = typeof products[number];
 
     if (!products.length) {
-      return res.status(500).json({ error: "Product catalog is empty" });
+      return res.status(500).json({ error: "Danh mục sản phẩm trống" });
     }
 
-    const recommendedIds = await getRecommendedProductIds(style, products);
+    const productsWithParsedTags = products.map(product => ({
+      ...product,
+      styleTags: JSON.parse(product.styleTags || '[]')
+    }));
+    const recommendedIds = await getRecommendedProductIds(style, productsWithParsedTags);
     let selectedProducts: ProductWithShop[] = products.filter((product: ProductWithShop) =>
       recommendedIds.includes(product.id)
     );
@@ -126,12 +130,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     if (error instanceof Error && error.name === "PrismaClientInitializationError") {
       return res.status(503).json({
-        error: "Database unavailable",
-        hint: "Start the database before requesting outfits.",
+        error: "Cơ sở dữ liệu không khả dụng",
+        hint: "Khởi động cơ sở dữ liệu trước khi yêu cầu trang phục.",
       });
     }
 
-    const message = error instanceof Error ? error.message : "Unexpected error";
+    const message = error instanceof Error ? error.message : "Lỗi không mong muốn";
     return res.status(500).json({ error: message });
   }
 }
